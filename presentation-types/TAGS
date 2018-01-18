@@ -1,54 +1,0 @@
-
-./src/Presentation/Types_flymake.hs,312
-module Presentation.TypesPresentation.Types4,5
-data User User15,16
-data User = UserUser15,16
-  { userId userId16,17
-  , userFirstName userFirstName17,18
-  , userLastName userLastName18,19
-type PresentationAPI PresentationAPI23,24
-api api28,29
-api api29,30
-users users32,33
-users users33,34
-
-./src/Presentation/flycheck_Types.hs,312
-module Presentation.TypesPresentation.Types4,5
-data User User15,16
-data User = UserUser15,16
-  { userId userId16,17
-  , userFirstName userFirstName17,18
-  , userLastName userLastName18,19
-type PresentationAPI PresentationAPI23,24
-api api28,29
-api api29,30
-users users32,33
-users users33,34
-
-./src/Presentation/Types.hs,312
-module Presentation.TypesPresentation.Types4,5
-data User User15,16
-data User = UserUser15,16
-  { userId userId16,17
-  , userFirstName userFirstName17,18
-  , userLastName userLastName18,19
-type PresentationAPI PresentationAPI23,24
-api api28,29
-api api29,30
-users users32,33
-users users33,34
-
-./test/Spec.hs,89
-module Main Main2,3
-main main9,10
-main main10,11
-spec spec12,13
-spec spec13,14
-
-./Setup.hs,15
-main main1,2
-
-./app/Main.hs,52
-module Main Main0,1
-main main4,5
-main main5,6
