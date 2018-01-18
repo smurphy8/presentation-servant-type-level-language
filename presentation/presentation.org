@@ -1,0 +1,56 @@
+#+TITLE: Servant 
+#+SUBTITLE: a type level dsl for web api 
+#+AUTHOR: Scott Murphy
+#+EMAIL: scottmurphy09@gmail.com
+#+DESCRIPTION: An introduction to web api programming using type level features
+#+KEYWORDS: types,servant,api,web,haskell
+#+OPTIONS: H:1
+#+LATEX_CLASS: beamer
+#+COLUMNS: %45ITEM %10BEAMER_env(Env) %10BEAMER_act(Act) %4BEAMER_col(Col) %8BEAMER_opt(Opt)
+#+BEAMER_THEME: blue
+#+BEAMER_COLOR_THEME:orchid
+#+BEAMER_FONT_THEME:
+#+BEAMER_INNER_THEME:
+#+BEAMER_OUTER_THEME:
+#+BEAMER_HEADER:
+#+BEAMER_FRAME_LEVEL: 2
+
+# To Run pandoc -t slidy -s presentation.org -o presentation.html --standalone
+
+
+** Types and Programming
+One view of types is as a method of capturing and verifying 
+some of what can be known about a program before it is ran.
+
+** Discretion 
+How much information to capture is 
+decided by the programmer and the languages ability to 
+express it.
+
+** Example 1
+*** Encoding Data Simply 
+The programmer could note only the meaning that matters 
+to the computer.  Here String is a type that matters to a PC 
+but not really to a human.
+#+begin_src haskell 
+buildCustomerEntry :: String -> String -> String -> Customer
+buildCustomerEntry name address notes = ...
+#+end_src
+
+** Example 2
+*** Encoding Data More Specifically 
+Another way of encoding the data would be to specifically require 
+the incoming data to be something previously discovered to be a 
+Name, Address and Notes.
+
+#+begin_src haskell 
+buildCustomerEntry :: Name -> Address -> Notes  -> Customer
+buildCustomerEntry name address notes = ...
+#+end_src
+
+** Typed Web Services
+Servant takes a high detail approach to creating a web service.
+#+begin_src haskell 
+
+#+end_src
+
