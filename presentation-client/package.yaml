@@ -1,0 +1,46 @@
+name: presentation-client
+version: '0.1.0.0'
+category: Embedded
+author: Scott Murphy
+maintainer: scottmurphy09@gmail.com
+copyright: MIT License
+license: BSD3
+github: smurphy8/presentation-client
+extra-source-files:
+- README.md
+library:
+  source-dirs: src
+  exposed-modules:
+  - Lib
+  dependencies:
+  - base >=4.7 && <5
+  - aeson
+  - servant-server
+  - wai
+  - warp
+executables:
+  presentation-client-exe:
+    main: Main.hs
+    source-dirs: app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - base
+    - presentation-client
+tests:
+  presentation-client-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - base
+    - presentation-client
+    - hspec
+    - hspec-wai
+    - hspec-wai-json
+    - aeson
