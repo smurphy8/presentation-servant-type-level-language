@@ -1,24 +1,6 @@
 
-./src/Lib.hs,141
-module LibLib3,4
-startApp startApp14,15
-startApp startApp15,16
-app app17,18
-app app18,19
-server server21,22
-server server22,23
-
-./src/flycheck_Lib.hs,141
-module LibLib3,4
-startApp startApp14,15
-startApp startApp15,16
-app app17,18
-app app18,19
-server server21,22
-server server22,23
-
-./src/Lib_flymake.hs,141
-module LibLib3,4
+./src/Server.hs,147
+module ServerServer3,4
 startApp startApp14,15
 startApp startApp15,16
 app app17,18
@@ -36,7 +18,17 @@ spec spec13,14
 ./Setup.hs,15
 main main1,2
 
+./app/Main_flymake.hs,52
+module Main Main0,1
+main main4,5
+main main5,6
+
 ./app/Main.hs,52
+module Main Main0,1
+main main4,5
+main main5,6
+
+./app/flycheck_Main.hs,52
 module Main Main0,1
 main main4,5
 main main5,6
