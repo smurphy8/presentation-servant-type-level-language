@@ -93,7 +93,7 @@ parseGameFile = header *>   rest
  where
    rest = manyTill parseGameLine eof 
 
-parseGames :: IO (Maybe _)
+parseGames :: IO (Maybe [Game])
 parseGames = parseFromFile parseGameFile  "soccer_games.csv" 
 
 

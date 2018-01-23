@@ -8,11 +8,8 @@ license: BSD3
 github: smurphy8/presentation-server
 extra-source-files:
 - README.md
-library:
-  source-dirs: src
-  exposed-modules:
-  - Server
-  dependencies:
+dependencies:
+  - time
   - base >=4.7 && <5
   - aeson
   - servant-server
@@ -20,6 +17,12 @@ library:
   - presentation-types
   - wai
   - warp
+library:
+  source-dirs: src
+  exposed-modules:
+  - Server
+  dependencies:
+
   ghc-options:
     - -Wall
 executables:
