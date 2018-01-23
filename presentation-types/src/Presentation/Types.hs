@@ -10,6 +10,7 @@ module Presentation.Types
     , Team (..)
     , Score (..)
     , Referee (..)
+    , Game(..)
     , GameResult (..)
     , PresentationAPI
     , api

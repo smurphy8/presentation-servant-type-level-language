@@ -49,3 +49,6 @@ yesod-devel/
 .stack-work
 *.cabal
 *TAGS*
+*TAGS*
+TAGS*
+TAGS
