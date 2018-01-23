@@ -1,7 +1,20 @@
 {-# LANGUAGE DataKinds       #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeOperators   #-}
+{- |
+Module      : Server
+Description : An example servant server 
+Copyright   : Plow Technologies LLC
+License     : MIT License
 
+Maintainer  : Scott Murphy
+
+
+Comma Separated value list put into a servant server as an example of
+using servant stuff 
+
+
+-}
 module Server
     ( startApp
     , app
@@ -15,14 +28,14 @@ import Control.Applicative
 import Data.Time 
 import Text.Trifecta
 import Data.Aeson
+import Control.Monad.IO.Class
 
 
-startApp :: IO ()
-startApp = run 8080 app
 
-app :: Application
-app = serve api server
 
+--------------------------------------------------
+-- Parse CSV of Games
+--------------------------------------------------
 
 parseDate :: Parser UTCTime
 parseDate = do
@@ -35,10 +48,10 @@ parseDate = do
 
 
 parseGameResult :: Parser GameResult
-parseGameResult = ((char 'H' *> pure Home) <|>
-                   (char 'D' *> pure Draw) <|> 
-                  (char 'A' *> pure Away)) <* comma
-
+parseGameResult = ((char 'H' *> pure Home)  <|>
+                   (char 'D' *> pure Draw)  <|> 
+                   (char 'A' *> pure Away)) <* comma
+ 
 
 parseReferee :: Parser Referee
 parseReferee = do
@@ -48,8 +61,13 @@ parseReferee = do
   return $ Referee firstInitial lastName
 
 
+validTeamNameCharacters :: Parser Char
 validTeamNameCharacters = alphaNum <|> space
 
+
+
+
+parseGameLine :: Parser Game
 parseGameLine = do
   date <- GameDate <$> parseDate
   homeTeam <- (Team <$> manyTill validTeamNameCharacters comma)
@@ -62,19 +80,46 @@ parseGameLine = do
 
 
 
-server :: Server PresentationAPI
-server = return users
 
 
+headerItem :: Parser Char
 headerItem = alphaNum <|> comma
 
+header :: Parser String
 header = manyTill headerItem newline
 
+parseGameFile :: Parser [Game]
 parseGameFile = header *>   rest
  where
    rest = manyTill parseGameLine eof 
 
-
-
 parseGames :: IO (Maybe _)
 parseGames = parseFromFile parseGameFile  "soccer_games.csv" 
+
+
+--------------------------------------------------
+-- Application Setup 
+--------------------------------------------------
+
+startApp :: IO ()
+startApp = run 8080 app
+
+app :: Application
+app = serve listApi gameServer
+
+
+--------------------------------------------------
+-- Server Handling
+--------------------------------------------------
+
+server :: Server PresentationAPI
+server = return users
+
+
+gameServer :: Server ListAPI 
+gameServer = listGames
+
+listGames :: Handler [Game]
+listGames = do maybeGames  <- liftIO parseGames
+               maybe (return []) return maybeGames
+
