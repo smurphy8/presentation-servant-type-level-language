@@ -40,7 +40,7 @@ data Referee = Referee
 
 $(deriveJSON defaultOptions ''Referee)
 
-data GameResult = Home | Away
+data GameResult = Home | Away | Draw 
 
 $(deriveJSON defaultOptions ''GameResult)
 

@@ -14,7 +14,7 @@ import Servant
 import Control.Applicative
 import Data.Time 
 import Text.Trifecta
-
+import Data.Aeson
 
 
 startApp :: IO ()
@@ -36,6 +36,7 @@ parseDate = do
 
 parseGameResult :: Parser GameResult
 parseGameResult = ((char 'H' *> pure Home) <|>
+                   (char 'D' *> pure Draw) <|> 
                   (char 'A' *> pure Away)) <* comma
 
 
@@ -47,10 +48,12 @@ parseReferee = do
   return $ Referee firstInitial lastName
 
 
+validTeamNameCharacters = alphaNum <|> space
+
 parseGameLine = do
   date <- GameDate <$> parseDate
-  homeTeam <- (Team <$> manyTill alphaNum comma)
-  awayTeam <- (Team <$> manyTill alphaNum comma)
+  homeTeam <- (Team <$> manyTill validTeamNameCharacters comma)
+  awayTeam <- (Team <$> manyTill validTeamNameCharacters comma)
   homeScore <- (Score . fromIntegral <$> integer <* comma)
   awayScore <- (Score . fromIntegral <$> integer <* comma)
   gameResult <- parseGameResult
@@ -69,7 +72,7 @@ header = manyTill headerItem newline
 
 parseGameFile = header *>   rest
  where
-   rest = parseGameLine
+   rest = manyTill parseGameLine eof 
 
 
 
