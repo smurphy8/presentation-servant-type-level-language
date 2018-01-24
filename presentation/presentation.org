@@ -21,7 +21,10 @@
 ** Types and Programming
 One view of types is as a method of capturing and verifying 
 some of what can be known about a program before it is ran.
-
+** Useful Resources
++ [[https://haskell-servant.github.io/][Servant Website on Github]]
++ [[https://www.andres-loeh.de/Servant/servant-wgp.pdf][Servant Paper]]
+g
 ** Discretion 
 How much information to capture is 
 decided by the programmer and the languages ability to 
@@ -51,6 +54,27 @@ buildCustomerEntry name address notes = ...
 ** Typed Web Services
 Servant takes a high detail approach to creating a web service.
 #+begin_src haskell 
-
+"games" :> Get '[JSON] [Game]
 #+end_src
+You can look at this and tell several things about the http request behind this.
+
++ It is a Get request
++ It has something to do with JSON 
++ It has something to do with some type named Game
+
+# Note: If you know what JSON is and what a GET service are you probably can figure out it will return JSON 
+# you can probably also figure out that some type named Game is returned 
+
+** Type Level DSL 
+
+#+begin_src haskell 
+type ListAPI = "games" :> Get '[JSON] [Game]
+#+end_src
++ Servant uses haskells type system to pass this infromation about a web service around as a 
+  first class citizen.  In this case =ListAPI= . 
++ Haskell allows for very expressive types
++ In fact so expressive, we can define a grammer at the type level!
+
+From the servant paper 
+
 

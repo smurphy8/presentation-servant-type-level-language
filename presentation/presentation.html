@@ -82,8 +82,24 @@ buildCustomerEntry name address notes <span class="fu">=</span> <span class="fu"
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">buildCustomerEntry ::</span> <span class="dt">Name</span> <span class="ot">-&gt;</span> <span class="dt">Address</span> <span class="ot">-&gt;</span> <span class="dt">Notes</span>  <span class="ot">-&gt;</span> <span class="dt">Customer</span>
 buildCustomerEntry name address notes <span class="fu">=</span> <span class="fu">...</span></code></pre></div>
 </div>
-<div id="web-services" class="slide section level2">
-<h1>Web Services</h1>
+<div id="typed-web-services" class="slide section level2">
+<h1>Typed Web Services</h1>
+<p>Servant takes a high detail approach to creating a web service.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="st">&quot;games&quot;</span> <span class="fu">:&gt;</span> <span class="dt">Get</span> <span class="ch">&#39;[JSON] [Game]</span></code></pre></div>
+<p>You can look at this and tell several things about the http request behind this.</p>
+<ul>
+<li>It is a Get request</li>
+<li>It has something to do with JSON</li>
+<li>It has something to do with some type named Game</li>
+</ul>
+</div>
+<div id="type-level-dsl" class="slide section level2">
+<h1>Type Level DSL</h1>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">type</span> <span class="dt">ListAPI</span> <span class="fu">=</span> <span class="st">&quot;games&quot;</span> <span class="fu">:&gt;</span> <span class="dt">Get</span> <span class="ch">&#39;[JSON] [Game]</span></code></pre></div>
+<ul>
+<li><p>Servant uses haskells type system to pass this infromation about a web service around as a first class citizen. In this case <code>ListAPI</code> .</p></li>
+<li><p>Notice the <code>:&gt;</code></p></li>
+</ul>
 </div>
 </body>
 </html>
