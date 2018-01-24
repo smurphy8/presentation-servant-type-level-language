@@ -75,6 +75,28 @@ type ListAPI = "games" :> Get '[JSON] [Game]
 + Haskell allows for very expressive types
 + In fact so expressive, we can define a grammer at the type level!
 
-From the servant paper 
+** Type Level Grammar  
+From the servant paper
 
 
+#+begin_src haskell 
+api::= api:<|>api                          rtype ::= Headers headers  type        
+     | item :> api                             | type                             
+     | method                                                                     
+                                           headers ::= ’[header, ...]             
+item ::= symbol                                                                   
+     | header                              ctypes ::= ’[ctype, ...]               
+     | ReqBody ctypes  type                                                       
+     | Capture symbol  type                header ::= Header symbol  type         
+     | QueryFlag symbol                                                           
+     | QueryParam symbol  type             symbol ::= a type-level string         
+     | QueryParams symbol  type                                                   
+     | ...                                 type ::= a Haskell type                
+method ::= Get ctypes  rtype                                                      
+     | Put ctypes  rtype                   ctype ::= PlainText                    
+     | Post ctypes  rtype                      | JSON                             
+     | Delete ctypes  rtype                    | HTML                             
+     | Patch ctypes  rtype                     | ...                              
+     | Raw
+     | ...
+#+end_src

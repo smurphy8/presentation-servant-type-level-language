@@ -64,6 +64,14 @@ Scott Murphy
 <h1>Types and Programming</h1>
 <p>One view of types is as a method of capturing and verifying some of what can be known about a program before it is ran.</p>
 </div>
+<div id="useful-resources" class="slide section level2">
+<h1>Useful Resources</h1>
+<ul>
+<li><a href="https://haskell-servant.github.io/">Servant Website on Github</a></li>
+<li><a href="https://www.andres-loeh.de/Servant/servant-wgp.pdf">Servant Paper</a></li>
+</ul>
+<p>g</p>
+</div>
 <div id="discretion" class="slide section level2">
 <h1>Discretion</h1>
 <p>How much information to capture is decided by the programmer and the languages ability to express it.</p>
@@ -97,9 +105,33 @@ buildCustomerEntry name address notes <span class="fu">=</span> <span class="fu"
 <h1>Type Level DSL</h1>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">type</span> <span class="dt">ListAPI</span> <span class="fu">=</span> <span class="st">&quot;games&quot;</span> <span class="fu">:&gt;</span> <span class="dt">Get</span> <span class="ch">&#39;[JSON] [Game]</span></code></pre></div>
 <ul>
-<li><p>Servant uses haskells type system to pass this infromation about a web service around as a first class citizen. In this case <code>ListAPI</code> .</p></li>
-<li><p>Notice the <code>:&gt;</code></p></li>
+<li>Servant uses haskells type system to pass this infromation about a web service around as a first class citizen. In this case <code>ListAPI</code> .</li>
+<li>Haskell allows for very expressive types</li>
+<li>In fact so expressive, we can define a grammer at the type level!</li>
 </ul>
+</div>
+<div id="type-level-grammar" class="slide section level2">
+<h1>Type Level Grammar</h1>
+<p>From the servant paper</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">api<span class="ot">::</span><span class="fu">=</span> api<span class="fu">:&lt;|&gt;</span>api                          rtype <span class="ot">::</span><span class="fu">=</span> <span class="dt">Headers</span> headers  <span class="kw">type</span>        
+     <span class="fu">|</span> item <span class="fu">:&gt;</span> api                             <span class="fu">|</span> <span class="kw">type</span>                             
+     <span class="fu">|</span> method                                                                     
+                                           headers <span class="ot">::</span><span class="fu">=</span> ’[header, <span class="fu">...</span>]             
+item <span class="ot">::</span><span class="fu">=</span> symbol                                                                   
+     <span class="fu">|</span> header                              ctypes <span class="ot">::</span><span class="fu">=</span> ’[ctype, <span class="fu">...</span>]               
+     <span class="fu">|</span> <span class="dt">ReqBody</span> ctypes  <span class="kw">type</span>                                                       
+     <span class="fu">|</span> <span class="dt">Capture</span> symbol  <span class="kw">type</span>                header <span class="ot">::</span><span class="fu">=</span> <span class="dt">Header</span> symbol  <span class="kw">type</span>         
+     <span class="fu">|</span> <span class="dt">QueryFlag</span> symbol                                                           
+     <span class="fu">|</span> <span class="dt">QueryParam</span> symbol  <span class="kw">type</span>             symbol <span class="ot">::</span><span class="fu">=</span> a <span class="kw">type</span><span class="fu">-</span>level string         
+     <span class="fu">|</span> <span class="dt">QueryParams</span> symbol  <span class="kw">type</span>                                                   
+     <span class="fu">|</span> <span class="fu">...</span>                                 <span class="kw">type</span> <span class="ot">::</span><span class="fu">=</span> a <span class="dt">Haskell</span> <span class="kw">type</span>                
+method <span class="ot">::</span><span class="fu">=</span> <span class="dt">Get</span> ctypes  rtype                                                      
+     <span class="fu">|</span> <span class="dt">Put</span> ctypes  rtype                   ctype <span class="ot">::</span><span class="fu">=</span> <span class="dt">PlainText</span>                    
+     <span class="fu">|</span> <span class="dt">Post</span> ctypes  rtype                      <span class="fu">|</span> <span class="dt">JSON</span>                             
+     <span class="fu">|</span> <span class="dt">Delete</span> ctypes  rtype                    <span class="fu">|</span> <span class="dt">HTML</span>                             
+     <span class="fu">|</span> <span class="dt">Patch</span> ctypes  rtype                     <span class="fu">|</span> <span class="fu">...</span>                              
+     <span class="fu">|</span> <span class="dt">Raw</span>
+     <span class="fu">|</span> <span class="fu">...</span></code></pre></div>
 </div>
 </body>
 </html>
