@@ -1,5 +1,4 @@
 {-# LANGUAGE DataKinds       #-}
-{-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeOperators   #-}
 {- |
 Module      : Server
@@ -27,7 +26,7 @@ import Servant
 import Control.Applicative
 import Data.Time 
 import Text.Trifecta
-import Data.Aeson
+-- import Data.Aeson
 import Control.Monad.IO.Class
 
 
@@ -112,14 +111,12 @@ app = serve listApi gameServer
 -- Server Handling
 --------------------------------------------------
 
-server :: Server PresentationAPI
-server = return users
 
 
 gameServer :: Server ListAPI 
-gameServer = listGames
+gameServer = listGamesH
 
-listGames :: Handler [Game]
-listGames = do maybeGames  <- liftIO parseGames
-               maybe (return []) return maybeGames
+listGamesH :: Handler [Game]
+listGamesH = do maybeGames  <- liftIO parseGames
+                maybe (return []) return maybeGames
 

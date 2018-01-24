@@ -17,6 +17,7 @@ library:
   - aeson
   - servant 
   - servant-client
+  - http-client
   - presentation-types
   ghc-options:
     - -Wall

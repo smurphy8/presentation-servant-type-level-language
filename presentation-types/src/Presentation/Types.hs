@@ -3,8 +3,7 @@
 {-# LANGUAGE TypeOperators   #-}
 {-# LANGUAGE TypeApplications #-}
 module Presentation.Types
-    ( User(..)
-    , listApi
+    ( listApi
     , ListAPI
     , GameDate(..)
     , Team (..)
@@ -12,9 +11,7 @@ module Presentation.Types
     , Referee (..)
     , Game(..)
     , GameResult (..)
-    , PresentationAPI
-    , api
-    , users) where
+    ) where
 
 import Data.Aeson
 import Data.Aeson.TH
@@ -58,28 +55,12 @@ data Game = Game
 
 $(deriveJSON defaultOptions ''Game)
 
-data User = User
-  { userId        :: Int
-  , userFirstName :: String
-  , userLastName  :: String
-  } deriving (Eq, Show)
 
-$(deriveJSON defaultOptions ''User)
-
-type PresentationAPI = "users" :> Get '[JSON] [User]
 
 type ListAPI = "games" :> Get '[JSON] [Game]
 
 listApi :: Proxy ListAPI
 listApi = Proxy
 
-api :: Proxy PresentationAPI
-api = Proxy 
-
-
-users :: [User]
-users = [ User 1 "Isaac" "Newton"
-        , User 2 "Albert" "Einstein"
-        ]
 
 

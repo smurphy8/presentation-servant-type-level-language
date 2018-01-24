@@ -1,123 +1,96 @@
 
-./src/Presentation/Types_flymake.hs,1176
+./src/Presentation/Types_flymake.hs,962
 module Presentation.TypesPresentation.Types4,5
-newtype GameDate=GameDate24,25
-newtype GameDate= GameDate{unGameDate:GameDate{unGameDate24,25
-newtype Team Team28,29
-newtype Team = Team Team28,29
-newtype Team = Team {unTeam unTeam28,29
-newtype Score Score31,32
-newtype Score = Score Score31,32
-newtype Score = Score {unScore unScore31,32
-data Referee Referee35,36
-data Referee = RefereeReferee35,36
-  { _initial _initial36,37
-    _lastName _lastName37,38
-data GameResult GameResult41,42
-data GameResult = Home Home41,42
-data GameResult = Home | AwayAway41,42
-data Game Game45,46
-data Game = GameGame45,46
-   _date _date47,48
-   _homeTeam _homeTeam48,49
-   _homeScore _homeScore49,50
-   _awayTeam _awayTeam50,51
-   _awayScore _awayScore51,52
-   _referee _referee52,53
-   _result _result53,54
-data User User59,60
-data User = UserUser59,60
-  { userId userId60,61
-  , userFirstName userFirstName61,62
-  , userLastName userLastName62,63
-type PresentationAPI PresentationAPI67,68
-type ListAPI ListAPI69,70
-listApi listApi71,72
-listApi listApi72,73
-api api74,75
-api api75,76
-users users78,79
-users users79,80
+newtype GameDate=GameDate22,23
+newtype GameDate= GameDate{unGameDate:GameDate{unGameDate22,23
+newtype Team Team26,27
+newtype Team = Team Team26,27
+newtype Team = Team {unTeam unTeam26,27
+newtype Score Score29,30
+newtype Score = Score Score29,30
+newtype Score = Score {unScore unScore29,30
+data Referee Referee33,34
+data Referee = RefereeReferee33,34
+  { _initial _initial34,35
+    _lastName _lastName35,36
+data GameResult GameResult39,40
+data GameResult = Home Home39,40
+data GameResult = Home | Away Away39,40
+data GameResult = Home | Away | DrawDraw39,40
+data Game Game43,44
+data Game = GameGame43,44
+   _date _date45,46
+   _homeTeam _homeTeam46,47
+   _homeScore _homeScore47,48
+   _awayTeam _awayTeam48,49
+   _awayScore _awayScore49,50
+   _referee _referee50,51
+   _result _result51,52
+type ListAPI ListAPI59,60
+listApi listApi61,62
+listApi listApi62,63
 
-./src/Presentation/flycheck_Types.hs,1176
+./src/Presentation/flycheck_Types.hs,962
 module Presentation.TypesPresentation.Types4,5
-newtype GameDate=GameDate24,25
-newtype GameDate= GameDate{unGameDate:GameDate{unGameDate24,25
-newtype Team Team28,29
-newtype Team = Team Team28,29
-newtype Team = Team {unTeam unTeam28,29
-newtype Score Score31,32
-newtype Score = Score Score31,32
-newtype Score = Score {unScore unScore31,32
-data Referee Referee35,36
-data Referee = RefereeReferee35,36
-  { _initial _initial36,37
-    _lastName _lastName37,38
-data GameResult GameResult41,42
-data GameResult = Home Home41,42
-data GameResult = Home | AwayAway41,42
-data Game Game45,46
-data Game = GameGame45,46
-   _date _date47,48
-   _homeTeam _homeTeam48,49
-   _homeScore _homeScore49,50
-   _awayTeam _awayTeam50,51
-   _awayScore _awayScore51,52
-   _referee _referee52,53
-   _result _result53,54
-data User User59,60
-data User = UserUser59,60
-  { userId userId60,61
-  , userFirstName userFirstName61,62
-  , userLastName userLastName62,63
-type PresentationAPI PresentationAPI67,68
-type ListAPI ListAPI69,70
-listApi listApi71,72
-listApi listApi72,73
-api api74,75
-api api75,76
-users users78,79
-users users79,80
+newtype GameDate=GameDate22,23
+newtype GameDate= GameDate{unGameDate:GameDate{unGameDate22,23
+newtype Team Team26,27
+newtype Team = Team Team26,27
+newtype Team = Team {unTeam unTeam26,27
+newtype Score Score29,30
+newtype Score = Score Score29,30
+newtype Score = Score {unScore unScore29,30
+data Referee Referee33,34
+data Referee = RefereeReferee33,34
+  { _initial _initial34,35
+    _lastName _lastName35,36
+data GameResult GameResult39,40
+data GameResult = Home Home39,40
+data GameResult = Home | Away Away39,40
+data GameResult = Home | Away | DrawDraw39,40
+data Game Game43,44
+data Game = GameGame43,44
+   _date _date45,46
+   _homeTeam _homeTeam46,47
+   _homeScore _homeScore47,48
+   _awayTeam _awayTeam48,49
+   _awayScore _awayScore49,50
+   _referee _referee50,51
+   _result _result51,52
+type ListAPI ListAPI59,60
+listApi listApi61,62
+listApi listApi62,63
 
-./src/Presentation/Types.hs,1176
+./src/Presentation/Types.hs,962
 module Presentation.TypesPresentation.Types4,5
-newtype GameDate=GameDate24,25
-newtype GameDate= GameDate{unGameDate:GameDate{unGameDate24,25
-newtype Team Team28,29
-newtype Team = Team Team28,29
-newtype Team = Team {unTeam unTeam28,29
-newtype Score Score31,32
-newtype Score = Score Score31,32
-newtype Score = Score {unScore unScore31,32
-data Referee Referee35,36
-data Referee = RefereeReferee35,36
-  { _initial _initial36,37
-    _lastName _lastName37,38
-data GameResult GameResult41,42
-data GameResult = Home Home41,42
-data GameResult = Home | AwayAway41,42
-data Game Game45,46
-data Game = GameGame45,46
-   _date _date47,48
-   _homeTeam _homeTeam48,49
-   _homeScore _homeScore49,50
-   _awayTeam _awayTeam50,51
-   _awayScore _awayScore51,52
-   _referee _referee52,53
-   _result _result53,54
-data User User59,60
-data User = UserUser59,60
-  { userId userId60,61
-  , userFirstName userFirstName61,62
-  , userLastName userLastName62,63
-type PresentationAPI PresentationAPI67,68
-type ListAPI ListAPI69,70
-listApi listApi71,72
-listApi listApi72,73
-api api74,75
-api api75,76
-users users78,79
-users users79,80
+newtype GameDate=GameDate22,23
+newtype GameDate= GameDate{unGameDate:GameDate{unGameDate22,23
+newtype Team Team26,27
+newtype Team = Team Team26,27
+newtype Team = Team {unTeam unTeam26,27
+newtype Score Score29,30
+newtype Score = Score Score29,30
+newtype Score = Score {unScore unScore29,30
+data Referee Referee33,34
+data Referee = RefereeReferee33,34
+  { _initial _initial34,35
+    _lastName _lastName35,36
+data GameResult GameResult39,40
+data GameResult = Home Home39,40
+data GameResult = Home | Away Away39,40
+data GameResult = Home | Away | DrawDraw39,40
+data Game Game43,44
+data Game = GameGame43,44
+   _date _date45,46
+   _homeTeam _homeTeam46,47
+   _homeScore _homeScore47,48
+   _awayTeam _awayTeam48,49
+   _awayScore _awayScore49,50
+   _referee _referee50,51
+   _result _result51,52
+type ListAPI ListAPI59,60
+listApi listApi61,62
+listApi listApi62,63
 
 ./test/Spec.hs,89
 module Main Main2,3
