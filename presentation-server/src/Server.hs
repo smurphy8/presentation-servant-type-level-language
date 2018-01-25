@@ -104,17 +104,13 @@ startApp :: IO ()
 startApp = run 8080 app
 
 app :: Application
-app = serve listApi gameServer
+app = serve listApi listGamesH
 
 
 --------------------------------------------------
 -- Server Handling
 --------------------------------------------------
 
-
-
-gameServer :: Server ListAPI 
-gameServer = listGamesH
 
 listGamesH :: Handler [Game]
 listGamesH = do maybeGames  <- liftIO parseGames

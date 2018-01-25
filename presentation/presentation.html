@@ -60,17 +60,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 Scott Murphy
   </p>
 </div>
-<div id="types-and-programming" class="slide section level2">
-<h1>Types and Programming</h1>
-<p>One view of types is as a method of capturing and verifying some of what can be known about a program before it is ran.</p>
-</div>
 <div id="useful-resources" class="slide section level2">
 <h1>Useful Resources</h1>
 <ul>
-<li><a href="https://haskell-servant.github.io/">Servant Website on Github</a></li>
-<li><a href="https://www.andres-loeh.de/Servant/servant-wgp.pdf">Servant Paper</a></li>
+<li><a href="https://haskell-servant.github.io/">Servant Website on Github: <a href="https://haskell-servant.github.io/" class="uri">https://haskell-servant.github.io/</a></a></li>
+<li><a href="https://www.andres-loeh.de/Servant/servant-wgp.pdf">Servant Paper: <a href="https://www.andres-loeh.de/Servant/servant-wgp.pdf" class="uri">https://www.andres-loeh.de/Servant/servant-wgp.pdf</a></a></li>
+<li><a href="https://hackage.haskell.org/package/servant">Servant on Hackage: <a href="https://hackage.haskell.org/package/servant" class="uri">https://hackage.haskell.org/package/servant</a></a></li>
+<li><a href="https://hackage.haskell.org/package/servant-client">Servant Client on Hackage: <a href="https://hackage.haskell.org/package/servant-client" class="uri">https://hackage.haskell.org/package/servant-client</a></a></li>
+<li><a href="https://hackage.haskell.org/package/servant-server">Servant Server on Github: <a href="https://hackage.haskell.org/package/servant-server" class="uri">https://hackage.haskell.org/package/servant-server</a></a></li>
 </ul>
-<p>g</p>
+</div>
+<div id="types-and-programming" class="slide section level2">
+<h1>Types and Programming</h1>
+<p>One view of types is as a method of capturing and verifying some of what can be known about a program before it is ran.</p>
 </div>
 <div id="discretion" class="slide section level2">
 <h1>Discretion</h1>
@@ -105,7 +107,7 @@ buildCustomerEntry name address notes <span class="fu">=</span> <span class="fu"
 <h1>Type Level DSL</h1>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">type</span> <span class="dt">ListAPI</span> <span class="fu">=</span> <span class="st">&quot;games&quot;</span> <span class="fu">:&gt;</span> <span class="dt">Get</span> <span class="ch">&#39;[JSON] [Game]</span></code></pre></div>
 <ul>
-<li>Servant uses haskells type system to pass this infromation about a web service around as a first class citizen. In this case <code>ListAPI</code> .</li>
+<li>Servant uses haskells type system to pass this infromation about a web service around, in this case as <code>ListAPI</code> .</li>
 <li>Haskell allows for very expressive types</li>
 <li>In fact so expressive, we can define a grammer at the type level!</li>
 </ul>
@@ -113,25 +115,107 @@ buildCustomerEntry name address notes <span class="fu">=</span> <span class="fu"
 <div id="type-level-grammar" class="slide section level2">
 <h1>Type Level Grammar</h1>
 <p>From the servant paper</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">api<span class="ot">::</span><span class="fu">=</span> api<span class="fu">:&lt;|&gt;</span>api                          rtype <span class="ot">::</span><span class="fu">=</span> <span class="dt">Headers</span> headers  <span class="kw">type</span>        
-     <span class="fu">|</span> item <span class="fu">:&gt;</span> api                             <span class="fu">|</span> <span class="kw">type</span>                             
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">api<span class="ot">::</span><span class="fu">=</span> api  <span class="fu">:&lt;|&gt;</span> api                       rtype   <span class="ot">::</span><span class="fu">=</span> <span class="dt">Headers</span> headers  <span class="kw">type</span>        
+     <span class="fu">|</span> item <span class="fu">:&gt;</span>   api                                 <span class="fu">|</span> <span class="kw">type</span>                             
      <span class="fu">|</span> method                                                                     
                                            headers <span class="ot">::</span><span class="fu">=</span> ’[header, <span class="fu">...</span>]             
-item <span class="ot">::</span><span class="fu">=</span> symbol                                                                   
-     <span class="fu">|</span> header                              ctypes <span class="ot">::</span><span class="fu">=</span> ’[ctype, <span class="fu">...</span>]               
-     <span class="fu">|</span> <span class="dt">ReqBody</span> ctypes  <span class="kw">type</span>                                                       
-     <span class="fu">|</span> <span class="dt">Capture</span> symbol  <span class="kw">type</span>                header <span class="ot">::</span><span class="fu">=</span> <span class="dt">Header</span> symbol  <span class="kw">type</span>         
-     <span class="fu">|</span> <span class="dt">QueryFlag</span> symbol                                                           
-     <span class="fu">|</span> <span class="dt">QueryParam</span> symbol  <span class="kw">type</span>             symbol <span class="ot">::</span><span class="fu">=</span> a <span class="kw">type</span><span class="fu">-</span>level string         
-     <span class="fu">|</span> <span class="dt">QueryParams</span> symbol  <span class="kw">type</span>                                                   
-     <span class="fu">|</span> <span class="fu">...</span>                                 <span class="kw">type</span> <span class="ot">::</span><span class="fu">=</span> a <span class="dt">Haskell</span> <span class="kw">type</span>                
-method <span class="ot">::</span><span class="fu">=</span> <span class="dt">Get</span> ctypes  rtype                                                      
-     <span class="fu">|</span> <span class="dt">Put</span> ctypes  rtype                   ctype <span class="ot">::</span><span class="fu">=</span> <span class="dt">PlainText</span>                    
-     <span class="fu">|</span> <span class="dt">Post</span> ctypes  rtype                      <span class="fu">|</span> <span class="dt">JSON</span>                             
-     <span class="fu">|</span> <span class="dt">Delete</span> ctypes  rtype                    <span class="fu">|</span> <span class="dt">HTML</span>                             
-     <span class="fu">|</span> <span class="dt">Patch</span> ctypes  rtype                     <span class="fu">|</span> <span class="fu">...</span>                              
-     <span class="fu">|</span> <span class="dt">Raw</span>
-     <span class="fu">|</span> <span class="fu">...</span></code></pre></div>
+item <span class="ot">::</span><span class="fu">=</span> path                                                                   
+     <span class="fu">|</span> header                              ctypes  <span class="ot">::</span><span class="fu">=</span> ’[ctype, <span class="fu">...</span>]               
+     <span class="fu">|</span> <span class="dt">ReqBody</span>     ctypes  <span class="kw">type</span>                                                       
+     <span class="fu">|</span> <span class="dt">Capture</span>     symbol  <span class="kw">type</span>            header  <span class="ot">::</span><span class="fu">=</span> <span class="dt">Header</span> symbol  <span class="kw">type</span>         
+     <span class="fu">|</span> <span class="dt">QueryFlag</span>   symbol                                                           
+     <span class="fu">|</span> <span class="dt">QueryParam</span>  symbol  <span class="kw">type</span>            symbol  <span class="ot">::</span><span class="fu">=</span> a <span class="kw">type</span><span class="fu">-</span>level string         
+     <span class="fu">|</span> <span class="dt">QueryParams</span> symbol  <span class="kw">type</span>            path    <span class="ot">::</span><span class="fu">=</span> symbol                                      
+     <span class="fu">|</span> <span class="fu">...</span>                                 <span class="kw">type</span>    <span class="ot">::</span><span class="fu">=</span> a <span class="dt">Haskell</span> <span class="kw">type</span>                
+method <span class="ot">::</span><span class="fu">=</span> 
+       <span class="dt">Get</span>    ctypes  rtype                ctype   <span class="ot">::</span><span class="fu">=</span> 
+     <span class="fu">|</span> <span class="dt">Put</span>    ctypes  rtype                        <span class="dt">PlainText</span>                                       
+     <span class="fu">|</span> <span class="dt">Post</span>   ctypes  rtype                      <span class="fu">|</span> <span class="dt">JSON</span>                             
+     <span class="fu">|</span> <span class="dt">Delete</span> ctypes  rtype                      <span class="fu">|</span> <span class="dt">HTML</span>                             
+     <span class="fu">|</span> <span class="dt">Patch</span>  ctypes  rtype                      <span class="fu">|</span> <span class="fu">...</span>                              
+     <span class="fu">|</span> <span class="dt">Raw</span>                                                    
+     <span class="fu">|</span> <span class="fu">...</span>                  
+</code></pre></div>
+</div>
+<div id="listapi-decomposed" class="slide section level2">
+<h1>ListAPI Decomposed</h1>
+<p>Our original type</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">type</span> <span class="dt">ListAPI</span> <span class="fu">=</span> <span class="st">&quot;games&quot;</span> <span class="fu">:&gt;</span> <span class="dt">Get</span> <span class="ch">&#39;[JSON] [Game]</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">:&gt;</span> <span class="co">-- adds an item to an api </span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="st">&quot;games&quot;</span> <span class="co">-- Type level literal that is the item being added</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Get</span> <span class="ch">&#39;[JSON] [Game] -- The method of the route</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ch">&#39;[JSON] -- The content type or ctype</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">[<span class="dt">Game</span>] <span class="co">-- The return type or rtype</span></code></pre></div>
+</div>
+<div id="a-matter-of-interpretation" class="slide section level2">
+<h1>A matter of interpretation</h1>
+<p>Once we have defined something as a grammer an obvious thing to do is to compile or interpret it into something new.</p>
+<p>There are a few built in interpreters that come with <code>Servant</code>.</p>
+</div>
+<div id="server" class="slide section level2">
+<h1>Server</h1>
+<p>The interpreter that transforms an API into a web service</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">serve  ::</span> <span class="dt">HasServer</span> api <span class="ch">&#39;[] =&gt;</span>
+          <span class="dt">Proxy</span> api <span class="ot">-&gt;</span> <span class="dt">ServerT</span> api <span class="dt">Handler</span> <span class="ot">-&gt;</span> <span class="dt">Application</span></code></pre></div>
+<p><strong>api</strong> is specified as <strong>ListAPI</strong></p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">serve  ::</span> <span class="dt">HasServer</span> <span class="dt">ListAPI</span> <span class="ch">&#39;[] =&gt;</span>
+          <span class="dt">Proxy</span> <span class="dt">ListAPI</span> <span class="ot">-&gt;</span> <span class="dt">ServerT</span> <span class="dt">ListAPI</span> <span class="dt">Handler</span> <span class="ot">-&gt;</span> <span class="dt">Application</span></code></pre></div>
+</div>
+<div id="server-example" class="slide section level2">
+<h1>Server Example</h1>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">
+<span class="ot">startApp ::</span> <span class="dt">IO</span> ()
+startApp <span class="fu">=</span> run <span class="dv">8080</span> app
+
+<span class="ot">app ::</span> <span class="dt">Application</span>
+app <span class="fu">=</span> serve listApi listGamesH
+
+<span class="ot">listGamesH ::</span> <span class="dt">Handler</span> [<span class="dt">Game</span>]
+listGamesH <span class="fu">=</span> <span class="kw">do</span> maybeGames  <span class="ot">&lt;-</span> liftIO parseGames
+                maybe (return []) return maybeGames</code></pre></div>
+</div>
+<div id="client" class="slide section level2">
+<h1>Client</h1>
+<p>The interpreter that transforms an API into a request</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">client ::</span> <span class="dt">HasClient</span> api <span class="ot">=&gt;</span> 
+           <span class="dt">Proxy</span> api <span class="ot">-&gt;</span> <span class="dt">Client</span> api</code></pre></div>
+<p><strong>api</strong> is specified as <strong>ListAPI</strong></p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">client ::</span> <span class="dt">HasClient</span> <span class="dt">ListAPI</span> <span class="ot">=&gt;</span> 
+           <span class="dt">Proxy</span> <span class="dt">ListAPI</span> <span class="ot">-&gt;</span> <span class="dt">Client</span> <span class="dt">ListAPI</span></code></pre></div>
+<ul>
+<li>The ListAPI is part of the return type, unlike in the serve interpreter</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">class</span> <span class="dt">RunClient</span> m <span class="ot">=&gt;</span> <span class="dt">HasClient</span> m api <span class="kw">where</span>
+  <span class="kw">type</span> <span class="dt">Client</span> (<span class="ot">m ::</span> <span class="fu">*</span> <span class="ot">-&gt;</span> <span class="fu">*</span>) (<span class="ot">api ::</span> <span class="fu">*</span>)<span class="ot"> ::</span> <span class="fu">*</span>
+<span class="ot">  clientWithRoute ::</span> <span class="dt">Proxy</span> m <span class="ot">-&gt;</span> <span class="dt">Proxy</span> api <span class="ot">-&gt;</span> <span class="dt">Request</span> <span class="ot">-&gt;</span> <span class="dt">Client</span> m api</code></pre></div>
+<p>All the constituent parts of ListAPI are members of this type and the grammar is constructed so that their composition is also a member.</p>
+</div>
+<div id="client-example-path-from-item" class="slide section level2">
+<h1>Client Example 'path' from 'item'</h1>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">instance</span> (<span class="dt">KnownSymbol</span> path, <span class="dt">HasClient</span> m api) <span class="ot">=&gt;</span> <span class="dt">HasClient</span> m (path <span class="fu">:&gt;</span> api) <span class="kw">where</span>
+  <span class="kw">type</span> <span class="dt">Client</span> m (path <span class="fu">:&gt;</span> api) <span class="fu">=</span> <span class="dt">Client</span> m api
+
+  clientWithRoute pm <span class="dt">Proxy</span> req <span class="fu">=</span>
+     clientWithRoute pm (<span class="dt">Proxy</span><span class="ot"> ::</span> <span class="dt">Proxy</span> api)
+                     (appendToPath p req)
+
+    <span class="kw">where</span> p <span class="fu">=</span> pack <span class="fu">$</span> symbolVal (<span class="dt">Proxy</span><span class="ot"> ::</span> <span class="dt">Proxy</span> path)</code></pre></div>
+<ul>
+<li>The haskell type variable <strong>path</strong> is known by the compiler to be a symbol (KnownSymbol path)</li>
+<li>The function <em>symbolVal</em> lowers the type level string to the value level, it is then added to a path being built up</li>
+<li>Every element from our grammer and their accompanying compositions have to be handled</li>
+<li>Thanks to everyone who did this work (it seems awful).</li>
+</ul>
+</div>
+<div id="client-example-user-view" class="slide section level2">
+<h1>Client Example (User View)</h1>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">getListGames <span class="fu">=</span> client api</code></pre></div>
+<p>Using this function...</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">exampleGetListGames ::</span> <span class="dt">IO</span> (<span class="dt">Either</span> <span class="dt">ServantError</span> [<span class="dt">Game</span>])
+exampleGetListGames <span class="fu">=</span> <span class="kw">do</span>
+  manager&#39; <span class="ot">&lt;-</span> Client.newManager Client.defaultManagerSettings
+  url <span class="ot">&lt;-</span> Servant.Common.BaseUrl.parseBaseUrl <span class="st">&quot;http://localhost:8080&quot;</span>
+  runClientM getListGames (<span class="dt">ClientEnv</span> manager&#39; url)</code></pre></div>
 </div>
 </body>
 </html>

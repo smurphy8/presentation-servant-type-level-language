@@ -17,19 +17,23 @@
 
 # To Run pandoc -t slidy -s presentation.org -o presentation.html --standalone
 
+** Useful Resources
++ [[https://haskell-servant.github.io/][Servant Website on Github: https://haskell-servant.github.io/]]
++ [[https://www.andres-loeh.de/Servant/servant-wgp.pdf][Servant Paper: https://www.andres-loeh.de/Servant/servant-wgp.pdf]]
++ [[https://hackage.haskell.org/package/servant][Servant on Hackage: https://hackage.haskell.org/package/servant]]
++ [[https://hackage.haskell.org/package/servant-client][Servant Client on Hackage: https://hackage.haskell.org/package/servant-client]]
++ [[https://hackage.haskell.org/package/servant-server][Servant Server on Github: https://hackage.haskell.org/package/servant-server]]
 
 ** Types and Programming
-One view of types is as a method of capturing and verifying 
-some of what can be known about a program before it is ran.
-** Useful Resources
-+ [[https://haskell-servant.github.io/][Servant Website on Github]]
-+ [[https://www.andres-loeh.de/Servant/servant-wgp.pdf][Servant Paper]]
-g
+One view of types is as a method of capturing and verifying some of what can be known about a program before it is ran.
 ** Discretion 
 How much information to capture is 
-decided by the programmer and the languages ability to 
+decided by the *programmer* and the languages ability to 
 express it.
 
+Typed functional programming languages like Haskell give you a lot of tools to specify your programs 
+in the type system.  But amount of detail and which details to specify are as always, left up to the programmer.
+/You Choose/ - Hogarth Hughes 
 ** Example 1
 *** Encoding Data Simply 
 The programmer could note only the meaning that matters 
@@ -56,7 +60,8 @@ Servant takes a high detail approach to creating a web service.
 #+begin_src haskell 
 "games" :> Get '[JSON] [Game]
 #+end_src
-You can look at this and tell several things about the http request behind this.
+You can look at this (possibly without knowing haskell) 
+and tell several things about the http request behind this.
 
 + It is a Get request
 + It has something to do with JSON 
@@ -70,33 +75,157 @@ You can look at this and tell several things about the http request behind this.
 #+begin_src haskell 
 type ListAPI = "games" :> Get '[JSON] [Game]
 #+end_src
-+ Servant uses haskells type system to pass this infromation about a web service around as a 
-  first class citizen.  In this case =ListAPI= . 
++ Servant uses haskells type system to pass this infromation about a web service around, in this case as =ListAPI= . 
 + Haskell allows for very expressive types
 + In fact so expressive, we can define a grammer at the type level!
 
 ** Type Level Grammar  
 From the servant paper
-
-
 #+begin_src haskell 
-api::= api:<|>api                          rtype ::= Headers headers  type        
-     | item :> api                             | type                             
+api::= api  :<|> api                       rtype   ::= Headers headers  type        
+     | item :>   api                                 | type                             
      | method                                                                     
                                            headers ::= ’[header, ...]             
-item ::= symbol                                                                   
-     | header                              ctypes ::= ’[ctype, ...]               
-     | ReqBody ctypes  type                                                       
-     | Capture symbol  type                header ::= Header symbol  type         
-     | QueryFlag symbol                                                           
-     | QueryParam symbol  type             symbol ::= a type-level string         
-     | QueryParams symbol  type                                                   
-     | ...                                 type ::= a Haskell type                
-method ::= Get ctypes  rtype                                                      
-     | Put ctypes  rtype                   ctype ::= PlainText                    
-     | Post ctypes  rtype                      | JSON                             
-     | Delete ctypes  rtype                    | HTML                             
-     | Patch ctypes  rtype                     | ...                              
-     | Raw
-     | ...
+item ::= path                                                                   
+     | header                              ctypes  ::= ’[ctype, ...]               
+     | ReqBody     ctypes  type                                                       
+     | Capture     symbol  type            header  ::= Header symbol  type         
+     | QueryFlag   symbol                                                           
+     | QueryParam  symbol  type            symbol  ::= a type-level string         
+     | QueryParams symbol  type            path    ::= symbol                                      
+     | ...                                 type    ::= a Haskell type                
+method ::= 
+       Get    ctypes  rtype                ctype   ::= 
+     | Put    ctypes  rtype                        PlainText                                       
+     | Post   ctypes  rtype                      | JSON                             
+     | Delete ctypes  rtype                      | HTML                             
+     | Patch  ctypes  rtype                      | ...                              
+     | Raw                                                    
+     | ...                  
+      
 #+end_src
+** ListAPI Decomposed
+Our original type
+#+begin_src haskell 
+type ListAPI = "games" :> Get '[JSON] [Game]
+#+end_src
+
+#+begin_src haskell 
+:> -- adds an item to an api 
+#+end_src 
+
+#+begin_src haskell 
+"games" -- Type level literal that is the item being added
+#+end_src
+
+#+begin_src haskell 
+Get '[JSON] [Game] -- The method of the route
+#+end_src
+
+#+begin_src haskell 
+'[JSON] -- The content type or ctype
+#+end_src
+
+#+begin_src haskell 
+[Game] -- The return type or rtype
+#+end_src
+
+** A matter of interpretation 
+Once we have defined something as a grammer an obvious thing to do is to compile or interpret it into something
+new.
+
+There are a few built in interpreters that come with =Servant=. 
+
+
+** Server
+The interpreter that transforms an API into a web service
+#+begin_src haskell
+serve  :: HasServer api '[] =>
+          Proxy api -> ServerT api Handler -> Application
+#+end_src
+*api* is specified as *ListAPI*
+#+begin_src haskell
+serve  :: HasServer ListAPI '[] =>
+          Proxy ListAPI -> ServerT ListAPI Handler -> Application
+#+end_src
+
+** Server Example 
+#+begin_src haskell 
+
+startApp :: IO ()
+startApp = run 8080 app
+
+app :: Application
+app = serve listApi listGamesH
+
+listGamesH :: Handler [Game]
+listGamesH = do maybeGames  <- liftIO parseGames
+                maybe (return []) return maybeGames
+#+end_src
+** Client
+The interpreter that transforms an API into a request    
+
+#+begin_src haskell 
+client :: HasClient api => 
+           Proxy api -> Client api
+#+end_src
+*api* is specified as *ListAPI*
+#+begin_src haskell
+client :: HasClient ListAPI => 
+           Proxy ListAPI -> Client ListAPI
+#+end_src
+
++  The ListAPI is part of the return type, unlike in the serve interpreter
+
+#+begin_src haskell
+class RunClient m => HasClient m api where
+  type Client (m :: * -> *) (api :: *) :: *
+  clientWithRoute :: Proxy m -> Proxy api -> Request -> Client m api
+#+end_src
+All the constituent parts of ListAPI are members of this type and the grammar is constructed 
+so that their composition is also a member.
+
+** Client Example 'path' from 'item'
+
+#+begin_src haskell
+instance (KnownSymbol path, HasClient m api) => HasClient m (path :> api) where
+  type Client m (path :> api) = Client m api
+
+  clientWithRoute pm Proxy req =
+     clientWithRoute pm (Proxy :: Proxy api)
+                     (appendToPath p req)
+
+    where p = pack $ symbolVal (Proxy :: Proxy path)
+#+end_src 
++ The haskell type variable *path* is known by the compiler to be a symbol (KnownSymbol path)
++ The function /symbolVal/ lowers the type level string to the value level, it is then added to a path being built up 
++ Every element from our grammer and their accompanying compositions have to be handled 
++ Thanks to everyone who did this work (it seems awful).
+** Client Example (User View)
+All the hardwork pays off at the user level.
+#+begin_src haskell
+getListGames :: ClientM [Game]
+getListGames = client api
+#+end_src
+Our interpreter /client/ was able to transform the api into a function that represents all the route specific information 
+needed to query the server!
+
+Here is what it looks like with the small amount of supporting code to make the requests happen.
+#+begin_src haskell 
+exampleGetListGames :: IO (Either ServantError [Game])
+exampleGetListGames = do
+  manager' <- Client.newManager Client.defaultManagerSettings  -- Managers are haskell's resource handler to use the network
+  url <- Servant.Common.BaseUrl.parseBaseUrl "http://localhost:8080" -- The base url parsed and added into the request
+  runClientM getListGames (ClientEnv manager' url) -- The complete request is sent!
+#+end_src
+
+** A look back
++ Servant lets you have detailed views into the information needed and delivered by an API
++ It is a type-level domain specific language (DSL) 
++ interpreters can be built to grab this information and use it for a variety of purposes
++ Because things are done at the type level, lots of correctness checking is automatic when building these interpreters
++ That means extra work on the implementation but more confidence at the call point
+
+** On ward and upward
+*** I want more!
+I want tests automated!
