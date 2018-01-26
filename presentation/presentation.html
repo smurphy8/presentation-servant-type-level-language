@@ -76,19 +76,22 @@ Scott Murphy
 </div>
 <div id="discretion" class="slide section level2">
 <h1>Discretion</h1>
-<p>How much information to capture is decided by the programmer and the languages ability to express it.</p>
+<p>How much information to capture is decided by the <strong>programmer</strong> and the languages ability to express it.</p>
+<p>Typed functional programming languages like Haskell give you a lot of tools to specify your programs in the type system. But amount of detail and which details to specify are as always, left up to the programmer.</p>
+<p><em>You Choose</em> - Hogarth Hughes</p>
 </div>
 <div id="example-1" class="slide section level2">
 <h1>Example 1</h1>
 <h3 id="encoding-data-simply">Encoding Data Simply</h3>
-<p>The programmer could note only the meaning that matters to the computer. Here String is a type that matters to a PC but not really to a human.</p>
+<p>Some programmers like to use only enough types to say what the computer needs. Here String is a type that matters to a PC but not really to a human.</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">buildCustomerEntry ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Customer</span>
 buildCustomerEntry name address notes <span class="fu">=</span> <span class="fu">...</span></code></pre></div>
 </div>
 <div id="example-2" class="slide section level2">
 <h1>Example 2</h1>
 <h3 id="encoding-data-more-specifically">Encoding Data More Specifically</h3>
-<p>Another way of encoding the data would be to specifically require the incoming data to be something previously discovered to be a Name, Address and Notes.</p>
+<p>Often, haskell programmers prefer a more detailed sort of typing.</p>
+<p>In the function below, the same actions take place but the inputs are going to be checked at compile time.</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">buildCustomerEntry ::</span> <span class="dt">Name</span> <span class="ot">-&gt;</span> <span class="dt">Address</span> <span class="ot">-&gt;</span> <span class="dt">Notes</span>  <span class="ot">-&gt;</span> <span class="dt">Customer</span>
 buildCustomerEntry name address notes <span class="fu">=</span> <span class="fu">...</span></code></pre></div>
 </div>
@@ -96,7 +99,7 @@ buildCustomerEntry name address notes <span class="fu">=</span> <span class="fu"
 <h1>Typed Web Services</h1>
 <p>Servant takes a high detail approach to creating a web service.</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="st">&quot;games&quot;</span> <span class="fu">:&gt;</span> <span class="dt">Get</span> <span class="ch">&#39;[JSON] [Game]</span></code></pre></div>
-<p>You can look at this and tell several things about the http request behind this.</p>
+<p>You can look at this (possibly without knowing haskell) and tell several things about the http request behind this.</p>
 <ul>
 <li>It is a Get request</li>
 <li>It has something to do with JSON</li>
@@ -209,13 +212,79 @@ listGamesH <span class="fu">=</span> <span class="kw">do</span> maybeGames  <spa
 </div>
 <div id="client-example-user-view" class="slide section level2">
 <h1>Client Example (User View)</h1>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">getListGames <span class="fu">=</span> client api</code></pre></div>
-<p>Using this function...</p>
+<p>All the hardwork pays off at the user level.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">getListGames ::</span> <span class="dt">ClientM</span> [<span class="dt">Game</span>]
+getListGames <span class="fu">=</span> client api</code></pre></div>
+<p>Our interpreter <em>client</em> was able to transform the api into a function that represents all the route specific information needed to query the server!</p>
+<p>Here is what it looks like with the small amount of supporting code to make the requests happen.</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">exampleGetListGames ::</span> <span class="dt">IO</span> (<span class="dt">Either</span> <span class="dt">ServantError</span> [<span class="dt">Game</span>])
 exampleGetListGames <span class="fu">=</span> <span class="kw">do</span>
-  manager&#39; <span class="ot">&lt;-</span> Client.newManager Client.defaultManagerSettings
-  url <span class="ot">&lt;-</span> Servant.Common.BaseUrl.parseBaseUrl <span class="st">&quot;http://localhost:8080&quot;</span>
-  runClientM getListGames (<span class="dt">ClientEnv</span> manager&#39; url)</code></pre></div>
+  manager&#39; <span class="ot">&lt;-</span> Client.newManager Client.defaultManagerSettings  <span class="co">-- Managers are haskell&#39;s resource handler to use the network</span>
+  url <span class="ot">&lt;-</span> Servant.Common.BaseUrl.parseBaseUrl <span class="st">&quot;http://localhost:8080&quot;</span> <span class="co">-- The base url parsed and added into the request</span>
+  runClientM getListGames (<span class="dt">ClientEnv</span> manager&#39; url) <span class="co">-- The complete request is sent!</span></code></pre></div>
+</div>
+<div id="a-look-back" class="slide section level2">
+<h1>A look back</h1>
+<ul>
+<li>Servant lets you have detailed views into the information needed and delivered by an API</li>
+<li>It is a type-level domain specific language (DSL)</li>
+<li>interpreters can be built to grab this information and use it for a variety of purposes</li>
+<li>Because things are done at the type level, lots of correctness checking is automatic when building these interpreters</li>
+<li>That means extra work on the implementation but more confidence at the call point</li>
+</ul>
+</div>
+<div id="on-ward-and-upward" class="slide section level2">
+<h1>On ward and upward</h1>
+<h3 id="you-want-more">You want more!</h3>
+<ul>
+<li>I want tests automated!</li>
+<li>I want auth</li>
+<li>I want docs</li>
+<li>I want to generate api's in other systems</li>
+</ul>
+</div>
+<div id="servant-says-yes" class="slide section level2">
+<h1>Servant says yes!</h1>
+</div>
+<div id="tests" class="slide section level2">
+<h1>Tests</h1>
+<p>The <code>servant-aeson-specs</code> package allows the specification of <strong>round trip</strong> and <strong>golden</strong> tests.</p>
+</div>
+<div id="round-trip-tests" class="slide section level2">
+<h1>Round Trip Tests</h1>
+<p>Round trip tests ensure that a given serialization is consistent</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">type</span> <span class="dt">A</span> <span class="co">-- Some Type A</span>
+<span class="kw">type</span> <span class="dt">S</span> <span class="co">-- Some Serialization S</span>
+
+<span class="ot">serialize ::</span> <span class="dt">A</span> <span class="ot">-&gt;</span> <span class="dt">S</span>
+<span class="ot">unSerialize ::</span> <span class="dt">S</span> <span class="ot">-&gt;</span> <span class="dt">A</span>
+
+<span class="co">-- Round Trip Test for A</span>
+<span class="ot">roundTripTest ::</span> (<span class="dt">A</span> <span class="ot">-&gt;</span> <span class="dt">S</span>) <span class="ot">-&gt;</span> (<span class="dt">S</span> <span class="ot">-&gt;</span> <span class="dt">A</span>) <span class="ot">-&gt;</span> <span class="dt">A</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span> 
+roundTripTest s u a <span class="fu">=</span> (s a) <span class="fu">==</span> (u a)
+</code></pre></div>
+</div>
+<div id="golden-tests" class="slide section level2">
+<h1>Golden Tests</h1>
+<p>Golden tests ensure that a serialization is consistent over time.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">
+storedSerializationFileName <span class="fu">=</span> <span class="st">&quot;A.golden&quot;</span>
+storedComparisonFileName <span class="fu">=</span> <span class="st">&quot;A.comparison&quot;</span>
+
+<span class="ot">writeToFile ::</span> <span class="dt">FileName</span> <span class="ot">-&gt;</span> <span class="dt">S</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> ()
+
+<span class="ot">readFromFile ::</span> <span class="dt">FileName</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> <span class="dt">S</span>
+
+<span class="ot">matchContents ::</span> <span class="dt">FileName</span> <span class="ot">-&gt;</span> <span class="dt">FileName</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> <span class="dt">Bool</span> 
+
+<span class="co">-- Round Trip Test for A</span>
+
+<span class="co">-- ensures identical serialization</span>
+<span class="ot">goldenTest ::</span> (<span class="dt">A</span> <span class="ot">-&gt;</span> <span class="dt">S</span>) <span class="ot">-&gt;</span> (<span class="dt">S</span> <span class="ot">-&gt;</span> <span class="dt">A</span>) <span class="ot">-&gt;</span> <span class="dt">A</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> <span class="dt">Bool</span> 
+goldenTest s u a <span class="fu">=</span> <span class="kw">do</span> 
+     _ <span class="ot">&lt;-</span> writeToFile storedComparisonFileName (s a)
+     matchContents storedComparisonFileName storedComparisonFileName 
+</code></pre></div>
 </div>
 </body>
 </html>

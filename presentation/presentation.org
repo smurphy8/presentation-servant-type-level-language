@@ -33,12 +33,15 @@ express it.
 
 Typed functional programming languages like Haskell give you a lot of tools to specify your programs 
 in the type system.  But amount of detail and which details to specify are as always, left up to the programmer.
+
+
 /You Choose/ - Hogarth Hughes 
 ** Example 1
 *** Encoding Data Simply 
-The programmer could note only the meaning that matters 
-to the computer.  Here String is a type that matters to a PC 
-but not really to a human.
+Some programmers like to use only enough types to
+say what the computer needs. Here String is a type 
+that matters to a PC but not really to a human.
+
 #+begin_src haskell 
 buildCustomerEntry :: String -> String -> String -> Customer
 buildCustomerEntry name address notes = ...
@@ -46,9 +49,12 @@ buildCustomerEntry name address notes = ...
 
 ** Example 2
 *** Encoding Data More Specifically 
-Another way of encoding the data would be to specifically require 
-the incoming data to be something previously discovered to be a 
-Name, Address and Notes.
+Often, haskell programmers prefer a more detailed sort of typing.
+
+In the function below, the same actions take place but the inputs 
+are going to be checked at compile time.
+
+# Note: Talk about smart constructors 
 
 #+begin_src haskell 
 buildCustomerEntry :: Name -> Address -> Notes  -> Customer
@@ -227,5 +233,58 @@ exampleGetListGames = do
 + That means extra work on the implementation but more confidence at the call point
 
 ** On ward and upward
-*** I want more!
-I want tests automated!
+*** You want more!
++ I want tests automated!
++ I want auth
++ I want docs
++ I want to generate api's in other systems
+
+** Servant says yes!
+** Tests
+The =servant-aeson-specs= package allows 
+the specification of *round trip* and *golden* tests.
+
+** Round Trip Tests
+
+Round trip tests ensure that a given serialization is consistent
+#+begin_src haskell
+type A -- Some Type A
+type S -- Some Serialization S
+
+serialize :: A -> S
+unSerialize :: S -> A
+
+-- Round Trip Test for A
+roundTripTest :: (A -> S) -> (S -> A) -> A -> Bool 
+roundTripTest s u a = (s a) == (u a)
+
+#+end_src
+
+
+** Golden Tests
+Golden tests ensure that a serialization is consistent over time.
+
+#+begin_src haskell
+
+storedSerializationFileName = "A.golden"
+storedComparisonFileName = "A.comparison"
+
+writeToFile :: FileName -> S -> IO ()
+
+readFromFile :: FileName -> IO S
+
+matchContents :: FileName -> FileName -> IO Bool 
+
+-- Round Trip Test for A
+
+-- ensures identical serialization
+goldenTest :: (A -> S) -> (S -> A) -> A -> IO Bool 
+goldenTest s u a = do 
+     _ <- writeToFile storedComparisonFileName (s a)
+     matchContents storedComparisonFileName storedSerializationFileName
+  
+#+end_src
+
+
+
+
