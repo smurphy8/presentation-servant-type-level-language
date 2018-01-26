@@ -1,0 +1,115 @@
+{
+    "seed": -4600287291992851028,
+    "samples": [
+        {
+            "_homeTeam": {
+                "unTeam": "d\u0013<󙧵j砎\u0005Y|𫐹?!𞯉)oDx󘸧󐙑@򩮺/=񣜸@:𠵏R"
+            },
+            "_date": {
+                "unGameDate": "1969-12-31T23:59:45Z"
+            },
+            "_result": "Draw",
+            "_awayTeam": {
+                "unTeam": "Zv\u001f\u001fkO\u0010bv\u001dB"
+            },
+            "_homeScore": {
+                "unScore": -6
+            },
+            "_referee": {
+                "_initial": "@",
+                "_lastName": "\u0008郩"
+            },
+            "_awayScore": {
+                "unScore": 18
+            }
+        },
+        {
+            "_homeTeam": {
+                "unTeam": "\u0012l򤴟\"\u0019򀻻\u001f{2\u0000\u001b\u001cp\u0006\u000e\u0001󩶮b"
+            },
+            "_date": {
+                "unGameDate": "1970-01-01T00:00:15Z"
+            },
+            "_result": "Away",
+            "_awayTeam": {
+                "unTeam": "h󐽺vd򎤴B𒪭𤊅^x\u0008􌾐򿑺l'\u001d"
+            },
+            "_homeScore": {
+                "unScore": -22
+            },
+            "_referee": {
+                "_initial": "{",
+                "_lastName": "\u0008\u001c𿥫\u0018𡀁s/D𶡂I~H\u0002j򌖅|d"
+            },
+            "_awayScore": {
+                "unScore": -20
+            }
+        },
+        {
+            "_homeTeam": {
+                "unTeam": "󓂨\rM2Z򎭜UQc\n\u001b\u0015\t=񡀓򆐬񫙥\tQ\u000fR#띓"
+            },
+            "_date": {
+                "unGameDate": "1970-01-01T00:00:12Z"
+            },
+            "_result": "Home",
+            "_awayTeam": {
+                "unTeam": "?NX^DM}\u001d\u000e"
+            },
+            "_homeScore": {
+                "unScore": 12
+            },
+            "_referee": {
+                "_initial": "Z",
+                "_lastName": "D2𰦎B񂪙n"
+            },
+            "_awayScore": {
+                "unScore": -7
+            }
+        },
+        {
+            "_homeTeam": {
+                "unTeam": "𥇻\u0000򣿾Yp\r~YJL󽣥'\u0013񱬕p\u000b򎁭`"
+            },
+            "_date": {
+                "unGameDate": "1970-01-01T00:00:18Z"
+            },
+            "_result": "Draw",
+            "_awayTeam": {
+                "unTeam": "󖮠!k1_Iq="
+            },
+            "_homeScore": {
+                "unScore": 9
+            },
+            "_referee": {
+                "_initial": "0",
+                "_lastName": "נּ򿇘Gu"
+            },
+            "_awayScore": {
+                "unScore": 8
+            }
+        },
+        {
+            "_homeTeam": {
+                "unTeam": "vx󓺗񫭀+񁖉L\u000e[򒏑3𤐤V{󚆐􍹸𠆎45u"
+            },
+            "_date": {
+                "unGameDate": "1970-01-01T00:00:19Z"
+            },
+            "_result": "Away",
+            "_awayTeam": {
+                "unTeam": "H񿙍8񪷕\u0016"
+            },
+            "_homeScore": {
+                "unScore": 4
+            },
+            "_referee": {
+                "_initial": "s",
+                "_lastName": ""
+            },
+            "_awayScore": {
+                "unScore": 27
+            }
+        }
+    ]
+}

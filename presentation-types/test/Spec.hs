@@ -2,19 +2,54 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main (main) where
 
-import Lib (app)
+
 import Test.Hspec
 import Test.Hspec.Wai
 import Test.Hspec.Wai.JSON
+import Servant.Aeson.GenericSpecs
+import Data.Proxy
+import Presentation.Types
+import Test.QuickCheck
+import Test.QuickCheck.Arbitrary.ADT
+import Data.Time
+import qualified Data.Time.Clock.POSIX as POSIX
+
+
 
 main :: IO ()
 main = hspec spec
 
-spec :: Spec
-spec = with (return app) $ do
-    describe "GET /users" $ do
-        it "responds with 200" $ do
-            get "/users" `shouldRespondWith` 200
-        it "responds with [User]" $ do
-            let users = "[{\"userId\":1,\"userFirstName\":\"Isaac\",\"userLastName\":\"Newton\"},{\"userId\":2,\"userFirstName\":\"Albert\",\"userLastName\":\"Einstein\"}]"
-            get "/users" `shouldRespondWith` users
+
+
+instance Arbitrary Day where
+  arbitrary = ModifiedJulianDay <$>
+              arbitrary 
+
+instance Arbitrary UTCTime where
+  arbitrary = (POSIX.posixSecondsToUTCTime . fromInteger) <$> arbitrary
+
+instance Arbitrary GameResult where
+  arbitrary = genericArbitrary
+
+instance Arbitrary Referee where
+  arbitrary = genericArbitrary
+
+instance Arbitrary Score where
+  arbitrary = genericArbitrary
+
+instance Arbitrary Team where
+  arbitrary = genericArbitrary
+
+instance Arbitrary GameDate where
+  arbitrary = genericArbitrary
+
+
+instance Arbitrary Game where
+  arbitrary = genericArbitrary
+
+
+
+spec = apiSpecs specProxy
+ where
+    specProxy :: Proxy ListAPI
+    specProxy = Proxy

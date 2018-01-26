@@ -37,10 +37,14 @@ resolver: lts-10.3
 # will not be run. This is useful for tweaking upstream packages.
 packages:
 - .
+
 # Dependency packages to be pulled from upstream that are not in the resolver
 # (e.g., acme-missiles-0.3)
-# extra-deps: []
-
+extra-deps:
+-   git: git@github.com:plow-technologies/servant-aeson-specs.git
+    commit: 7135c0529f4f65329b1ee4326f65ce7a5991b88b
+- hspec-golden-aeson-0.5.1.0
+- quickcheck-arbitrary-adt-0.3.1.0
 # Override default flag values for local packages and extra-deps
 # flags: {}
 

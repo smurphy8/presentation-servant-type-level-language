@@ -8,15 +8,16 @@ license: BSD3
 github: smurphy8/presentation-types
 extra-source-files:
 - README.md
-library:
-  source-dirs: src
-  exposed-modules:
-  - Presentation.Types
-  dependencies:
+
+dependencies:
   - base >=4.7 && <5
   - aeson
   - servant
-  - time
+  - time  
+library:
+  source-dirs: src
+  exposed-modules:
+  - Presentation.Typeso
   ghc-options:
     - -Wall
 tests:
@@ -33,4 +34,7 @@ tests:
     - hspec
     - hspec-wai
     - hspec-wai-json
+    - servant-aeson-specs
+    - QuickCheck
+    - quickcheck-arbitrary-adt
     - aeson
