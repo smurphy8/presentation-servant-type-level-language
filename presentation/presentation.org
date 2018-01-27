@@ -242,8 +242,9 @@ exampleGetListGames = do
 ** Servant says yes!
 ** Tests
 The =servant-aeson-specs= package allows 
-the specification of *round trip* and *golden* tests.
-
+the specification of...
++ Round Trip
++ Golden Tests
 ** Round Trip Tests
 
 Round trip tests ensure that a given serialization is consistent
@@ -288,3 +289,77 @@ goldenTest s u a = do
 
 
 
+
+** Servant Aeson Specs 1 of 3
+=Aeson= is the library in haskell for generating JSON.  Say I want to serialize all my types into JSON.
+Well, after writing the code to do that, I might want a set of round trip tests to make sure the serialization 
+works both ways.  I also may want a set of golden tests to compare old serializations against current serializations.
+
+Writing these tests is very boiler plate but also very important.  Here is the code to write them with Servant.
+
+#+begin_src haskell 
+spec = apiSpecs specProxy
+ where
+    specProxy :: Proxy ListAPI
+    specProxy = Proxy
+
+#+end_src
+
+** Servant Aeson Specs 2 of 3
+Is that it?  Well, not quite you also have to have ~Arbitrary~ instances for all the types involved which allow the
+QuickCheck library to generate examples of the various types.  
+
+
+#+begin_src haskell
+
+-- A few instances of Arbitrary
+instance Arbitrary Score where
+  arbitrary = genericArbitrary
+
+instance Arbitrary Team where
+  arbitrary = genericArbitrary
+
+instance Arbitrary GameDate where
+  arbitrary = genericArbitrary
+
+
+instance Arbitrary Game where
+  arbitrary = genericArbitrary
+
+#+end_src
+
+** Servant Aeson Specs 3 of 3
+
+Servant's API system does let you know what types need the instances though!
+
+#+begin_src 
+
+test/Spec.hs:52:8-25: error: …
+    • No instance for (Arbitrary Game) arising from a use of ‘apiSpecs’
+    • In the expression: apiSpecs specProxy
+      In an equation for ‘spec’:
+          spec
+            = apiSpecs specProxy
+            where
+                specProxy :: Proxy ListAPI
+                specProxy = Proxy
+   |
+Compilation failed.
+
+#+end_src
+
+
+** Problems with Servant
+
+You can use servant to do lots of things but it does have some drawbacks
+
+*** Error handling
+Often the type errors that are generated are quite crytpic
+*** Lack of Plugins
+I would love to see more types of plugins for servant.  
+
+
+** Conclusion 
+Servant shows how a well thought out typed dsl system can add a huge amount of benefit 
+to understanding a program.  It has had a huge impact in haskell since its introduction
+in 2014.  I expect more big things from it in the future!
