@@ -23,7 +23,7 @@
 + [[https://hackage.haskell.org/package/servant][Servant on Hackage: https://hackage.haskell.org/package/servant]]
 + [[https://hackage.haskell.org/package/servant-client][Servant Client on Hackage: https://hackage.haskell.org/package/servant-client]]
 + [[https://hackage.haskell.org/package/servant-server][Servant Server on Github: https://hackage.haskell.org/package/servant-server]]
-
++ [[https://hackage.haskell.org/packages/search?terms=servant][All Servant things on Hackage]]
 ** Types and Programming
 One view of types is as a method of capturing and verifying some of what can be known about a program before it is ran.
 ** Discretion 
@@ -357,7 +357,6 @@ You can use servant to do lots of things but it does have some drawbacks
 Often the type errors that are generated are quite crytpic
 *** Lack of Plugins
 I would love to see more types of plugins for servant.  
-
 
 ** Conclusion 
 Servant shows how a well thought out typed dsl system can add a huge amount of benefit 

@@ -21,10 +21,10 @@ import GHC.Generics
 import Servant.API
 import Data.Time
 
-
 newtype GameDate= GameDate{unGameDate:: UTCTime }
   deriving (Eq,Show,Generic)
 $(deriveJSON defaultOptions ''GameDate)
+
 
 
 newtype Team = Team {unTeam :: String}

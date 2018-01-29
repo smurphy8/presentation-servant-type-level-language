@@ -1,103 +1,65 @@
 
-./src/Presentation/Types_flymake.hs,962
-module Presentation.TypesPresentation.Types4,5
-newtype GameDate=GameDate22,23
-newtype GameDate= GameDate{unGameDate:GameDate{unGameDate22,23
-newtype Team Team26,27
-newtype Team = Team Team26,27
-newtype Team = Team {unTeam unTeam26,27
-newtype Score Score29,30
-newtype Score = Score Score29,30
-newtype Score = Score {unScore unScore29,30
-data Referee Referee33,34
-data Referee = RefereeReferee33,34
-  { _initial _initial34,35
-    _lastName _lastName35,36
-data GameResult GameResult39,40
-data GameResult = Home Home39,40
-data GameResult = Home | Away Away39,40
-data GameResult = Home | Away | DrawDraw39,40
-data Game Game43,44
-data Game = GameGame43,44
-   _date _date45,46
-   _homeTeam _homeTeam46,47
-   _homeScore _homeScore47,48
-   _awayTeam _awayTeam48,49
-   _awayScore _awayScore49,50
-   _referee _referee50,51
-   _result _result51,52
-type ListAPI ListAPI59,60
-listApi listApi61,62
-listApi listApi62,63
-
-./src/Presentation/flycheck_Types.hs,962
-module Presentation.TypesPresentation.Types4,5
-newtype GameDate=GameDate22,23
-newtype GameDate= GameDate{unGameDate:GameDate{unGameDate22,23
-newtype Team Team26,27
-newtype Team = Team Team26,27
-newtype Team = Team {unTeam unTeam26,27
-newtype Score Score29,30
-newtype Score = Score Score29,30
-newtype Score = Score {unScore unScore29,30
-data Referee Referee33,34
-data Referee = RefereeReferee33,34
-  { _initial _initial34,35
-    _lastName _lastName35,36
-data GameResult GameResult39,40
-data GameResult = Home Home39,40
-data GameResult = Home | Away Away39,40
-data GameResult = Home | Away | DrawDraw39,40
-data Game Game43,44
-data Game = GameGame43,44
-   _date _date45,46
-   _homeTeam _homeTeam46,47
-   _homeScore _homeScore47,48
-   _awayTeam _awayTeam48,49
-   _awayScore _awayScore49,50
-   _referee _referee50,51
-   _result _result51,52
-type ListAPI ListAPI59,60
-listApi listApi61,62
-listApi listApi62,63
-
 ./src/Presentation/Types.hs,962
-module Presentation.TypesPresentation.Types4,5
-newtype GameDate=GameDate22,23
-newtype GameDate= GameDate{unGameDate:GameDate{unGameDate22,23
-newtype Team Team26,27
-newtype Team = Team Team26,27
-newtype Team = Team {unTeam unTeam26,27
-newtype Score Score29,30
-newtype Score = Score Score29,30
-newtype Score = Score {unScore unScore29,30
-data Referee Referee33,34
-data Referee = RefereeReferee33,34
-  { _initial _initial34,35
-    _lastName _lastName35,36
-data GameResult GameResult39,40
-data GameResult = Home Home39,40
-data GameResult = Home | Away Away39,40
-data GameResult = Home | Away | DrawDraw39,40
-data Game Game43,44
-data Game = GameGame43,44
-   _date _date45,46
-   _homeTeam _homeTeam46,47
-   _homeScore _homeScore47,48
-   _awayTeam _awayTeam48,49
-   _awayScore _awayScore49,50
-   _referee _referee50,51
-   _result _result51,52
-type ListAPI ListAPI59,60
-listApi listApi61,62
-listApi listApi62,63
+module Presentation.TypesPresentation.Types5,6
+newtype GameDate=GameDate23,24
+newtype GameDate= GameDate{unGameDate:GameDate{unGameDate23,24
+newtype Team Team29,30
+newtype Team = Team Team29,30
+newtype Team = Team {unTeam unTeam29,30
+newtype Score Score33,34
+newtype Score = Score Score33,34
+newtype Score = Score {unScore unScore33,34
+data Referee Referee38,39
+data Referee = RefereeReferee38,39
+  { _initial _initial39,40
+    _lastName _lastName40,41
+data GameResult GameResult44,45
+data GameResult = Home Home44,45
+data GameResult = Home | Away Away44,45
+data GameResult = Home | Away | DrawDraw44,45
+data Game Game48,49
+data Game = GameGame48,49
+   _date _date50,51
+   _homeTeam _homeTeam51,52
+   _homeScore _homeScore52,53
+   _awayTeam _awayTeam53,54
+   _awayScore _awayScore54,55
+   _referee _referee55,56
+   _result _result56,57
+type ListAPI ListAPI64,65
+listApi listApi66,67
+listApi listApi67,68
 
-./test/Spec.hs,89
+./test/Spec.hs,98
 module Main Main2,3
-main main9,10
-main main10,11
-spec spec12,13
-spec spec13,14
+main main18,19
+main main19,20
+instance instance23,24
+spec spec51,52
 
 ./Setup.hs,15
 main main1,2
+
+./app/Main_flymake.hs,140
+module Main Main4,5
+type WithSwaggerAPI WithSwaggerAPI15,16
+server server25,26
+server server26,27
+main main36,37
+main main37,38
+
+./app/Main.hs,140
+module Main Main4,5
+type WithSwaggerAPI WithSwaggerAPI15,16
+server server25,26
+server server26,27
+main main36,37
+main main37,38
+
+./app/flycheck_Main.hs,140
+module Main Main4,5
+type WithSwaggerAPI WithSwaggerAPI15,16
+server server25,26
+server server26,27
+main main36,37
+main main37,38
