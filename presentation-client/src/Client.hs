@@ -2,7 +2,7 @@
 {-# LANGUAGE DataKinds       #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeOperators   #-}
-module Client ( ) where
+module Client  where
 
 import Data.Aeson
 import Data.Aeson.TH

@@ -41,11 +41,11 @@ instance Arbitrary Team where
   arbitrary = genericArbitrary
 
 instance Arbitrary GameDate where
-  arbitrary = genericArbitrary
+   arbitrary = genericArbitrary
 
 
 instance Arbitrary Game where
-  arbitrary = genericArbitrary
+   arbitrary = genericArbitrary
 
 
 

@@ -60,19 +60,23 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 Scott Murphy
   </p>
 </div>
-<div id="useful-resources" class="slide section level2">
-<h1>Useful Resources</h1>
-<ul>
-<li><a href="https://haskell-servant.github.io/">Servant Website on Github: <a href="https://haskell-servant.github.io/" class="uri">https://haskell-servant.github.io/</a></a></li>
-<li><a href="https://www.andres-loeh.de/Servant/servant-wgp.pdf">Servant Paper: <a href="https://www.andres-loeh.de/Servant/servant-wgp.pdf" class="uri">https://www.andres-loeh.de/Servant/servant-wgp.pdf</a></a></li>
-<li><a href="https://hackage.haskell.org/package/servant">Servant on Hackage: <a href="https://hackage.haskell.org/package/servant" class="uri">https://hackage.haskell.org/package/servant</a></a></li>
-<li><a href="https://hackage.haskell.org/package/servant-client">Servant Client on Hackage: <a href="https://hackage.haskell.org/package/servant-client" class="uri">https://hackage.haskell.org/package/servant-client</a></a></li>
-<li><a href="https://hackage.haskell.org/package/servant-server">Servant Server on Github: <a href="https://hackage.haskell.org/package/servant-server" class="uri">https://hackage.haskell.org/package/servant-server</a></a></li>
-</ul>
-</div>
 <div id="types-and-programming" class="slide section level2">
 <h1>Types and Programming</h1>
 <p>One view of types is as a method of capturing and verifying some of what can be known about a program before it is ran.</p>
+</div>
+<div id="type-level-value-level" class="slide section level2">
+<h1>Type Level, Value Level</h1>
+<p>There are two sorts of terms we are concerned with. Type level and Value level.</p>
+<ul>
+<li>Type level terms are for specifying what is expected from a program</li>
+<li>Value level terms are for implementing the program.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">combine ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> (<span class="dt">Int</span>,<span class="dt">String</span>)
+combine i s <span class="fu">=</span> (i , s)</code></pre></div>
+<ul>
+<li><strong>Int</strong> and <strong>String</strong> are terms at the type level.</li>
+<li><strong>i</strong> and <strong>s</strong> are terms at the value level.</li>
+</ul>
 </div>
 <div id="discretion" class="slide section level2">
 <h1>Discretion</h1>
@@ -94,6 +98,17 @@ buildCustomerEntry name address notes <span class="fu">=</span> <span class="fu"
 <p>In the function below, the same actions take place but the inputs are going to be checked at compile time.</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">buildCustomerEntry ::</span> <span class="dt">Name</span> <span class="ot">-&gt;</span> <span class="dt">Address</span> <span class="ot">-&gt;</span> <span class="dt">Notes</span>  <span class="ot">-&gt;</span> <span class="dt">Customer</span>
 buildCustomerEntry name address notes <span class="fu">=</span> <span class="fu">...</span></code></pre></div>
+</div>
+<div id="tools-for-typing-in-haskell" class="slide section level2">
+<h1>Tools For Typing In Haskell</h1>
+<p>Proxy allows terms from the type level to be use in the value level</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Proxy</span> a <span class="fu">=</span> <span class="dt">Proxy</span> 
+λ symbolVal (<span class="dt">Proxy</span><span class="ot"> ::</span> <span class="dt">Proxy</span> <span class="st">&quot;example string literal&quot;</span>)
+<span class="st">&quot;example string literal&quot;</span></code></pre></div>
+<p>Operators can be declared at the type level in addtion to the value level.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> (<span class="ot">path ::</span> k) <span class="fu">:&gt;</span> (<span class="ot">a ::</span> <span class="fu">*</span>)
+    <span class="kw">deriving</span> (<span class="dt">Typeable</span>)
+<span class="kw">infixr</span> <span class="dv">4</span> <span class="fu">:&gt;</span></code></pre></div>
 </div>
 <div id="typed-web-services" class="slide section level2">
 <h1>Typed Web Services</h1>
@@ -265,7 +280,7 @@ exampleGetListGames <span class="fu">=</span> <span class="kw">do</span>
 
 <span class="co">-- Round Trip Test for A</span>
 <span class="ot">roundTripTest ::</span> (<span class="dt">A</span> <span class="ot">-&gt;</span> <span class="dt">S</span>) <span class="ot">-&gt;</span> (<span class="dt">S</span> <span class="ot">-&gt;</span> <span class="dt">A</span>) <span class="ot">-&gt;</span> <span class="dt">A</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span> 
-roundTripTest s u a <span class="fu">=</span> (s a) <span class="fu">==</span> (u a)
+roundTripTest s u a <span class="fu">=</span> (s a) <span class="fu">==</span> (u (s a))
 </code></pre></div>
 </div>
 <div id="golden-tests" class="slide section level2">
@@ -284,8 +299,8 @@ storedComparisonFileName <span class="fu">=</span> <span class="st">&quot;A.comp
 <span class="co">-- Round Trip Test for A</span>
 
 <span class="co">-- ensures identical serialization</span>
-<span class="ot">goldenTest ::</span> (<span class="dt">A</span> <span class="ot">-&gt;</span> <span class="dt">S</span>) <span class="ot">-&gt;</span> (<span class="dt">S</span> <span class="ot">-&gt;</span> <span class="dt">A</span>) <span class="ot">-&gt;</span> <span class="dt">A</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> <span class="dt">Bool</span> 
-goldenTest s u a <span class="fu">=</span> <span class="kw">do</span> 
+<span class="ot">goldenTest ::</span> (<span class="dt">A</span> <span class="ot">-&gt;</span> <span class="dt">S</span>) <span class="ot">-&gt;</span>  <span class="dt">A</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> <span class="dt">Bool</span> 
+goldenTest s a <span class="fu">=</span> <span class="kw">do</span> 
      _ <span class="ot">&lt;-</span> writeToFile storedComparisonFileName (s a)
      matchContents storedComparisonFileName storedSerializationFileName
 </code></pre></div>
@@ -337,6 +352,22 @@ Compilation failed.
 
 </code></pre>
 </div>
+<div id="servant-swagger" class="slide section level2">
+<h1>Servant Swagger</h1>
+<p>Document Generation, a taste.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">
+<span class="co">-- View at </span>
+<span class="co">-- localhost:8080/swagger-ui</span>
+
+
+<span class="ot">server ::</span> <span class="dt">Server</span> <span class="dt">WithSwaggerAPI</span>
+server <span class="fu">=</span> swaggerSchemaUIServer (toSwagger (<span class="dt">Proxy</span><span class="ot"> ::</span> <span class="dt">Proxy</span> <span class="dt">ListAPI</span>))
+
+<span class="ot">main ::</span> <span class="dt">IO</span> ()
+main <span class="fu">=</span> run <span class="dv">8080</span> app
+  <span class="kw">where</span>
+    app <span class="fu">=</span> serve (<span class="dt">Proxy</span><span class="ot"> ::</span> <span class="dt">Proxy</span> <span class="dt">WithSwaggerAPI</span>)  server</code></pre></div>
+</div>
 <div id="problems-with-servant" class="slide section level2">
 <h1>Problems with Servant</h1>
 <p>You can use servant to do lots of things but it does have some drawbacks</p>
@@ -348,6 +379,17 @@ Compilation failed.
 <div id="conclusion" class="slide section level2">
 <h1>Conclusion</h1>
 <p>Servant shows how a well thought out typed dsl system can add a huge amount of benefit to understanding a program. It has had a huge impact in haskell since its introduction in 2014. I expect more big things from it in the future!</p>
+</div>
+<div id="useful-resources" class="slide section level2">
+<h1>Useful Resources</h1>
+<ul>
+<li><a href="https://haskell-servant.github.io/">Servant Website on Github: <a href="https://haskell-servant.github.io/" class="uri">https://haskell-servant.github.io/</a></a></li>
+<li><a href="https://www.andres-loeh.de/Servant/servant-wgp.pdf">Servant Paper: <a href="https://www.andres-loeh.de/Servant/servant-wgp.pdf" class="uri">https://www.andres-loeh.de/Servant/servant-wgp.pdf</a></a></li>
+<li><a href="https://hackage.haskell.org/package/servant">Servant on Hackage: <a href="https://hackage.haskell.org/package/servant" class="uri">https://hackage.haskell.org/package/servant</a></a></li>
+<li><a href="https://hackage.haskell.org/package/servant-client">Servant Client on Hackage: <a href="https://hackage.haskell.org/package/servant-client" class="uri">https://hackage.haskell.org/package/servant-client</a></a></li>
+<li><a href="https://hackage.haskell.org/package/servant-server">Servant Server on Github: <a href="https://hackage.haskell.org/package/servant-server" class="uri">https://hackage.haskell.org/package/servant-server</a></a></li>
+<li><a href="https://hackage.haskell.org/packages/search?terms=servant">All Servant things on Hackage</a></li>
+</ul>
 </div>
 </body>
 </html>
